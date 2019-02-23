@@ -141,7 +141,7 @@ new Vue({
     methods: {
         decipher (cipher, value, isKey) {
             // If the previously focused textarea was plain and now the focused is a key value.
-            if (isKey && this.previouslyFocused === 'plain') {
+            if (isKey && this.previouslyFocused.name !== cipher.name) {
                 cipher.content = this.encode[cipher.name].bind(this)(cipher);
             } else {
                 this.plain = this.decode[cipher.name].bind(this)(value || cipher.content, cipher);
