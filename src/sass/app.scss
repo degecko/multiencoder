@@ -291,17 +291,15 @@ label.checkbox {
 }
 
 .color-picker {
-  max-height: 0;
+  flex-shrink: 0;
   overflow: hidden;
   transition: all .2s;
 
   &.visible {
-    flex-shrink: 0;
-    max-height: 22px;
     margin-top: .5rem;
 
     .color {
-      border: 7px solid;
+      border-width: 7px;
       width: 8px;
       height: 8px;
     }
