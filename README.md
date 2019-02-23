@@ -8,4 +8,4 @@ Enable the ciphers you're interested in and start typing in the Plain Text field
 To decode am encoded string, enable the cipher from the sidebar and paste your string into the Cipher's field.
 
 ## Online
-The project is available at: (multiencoder.com)[https://multiencoder.com]
+The project is available at: https://multiencoder.com
