@@ -295,6 +295,7 @@ label.checkbox {
   transition: all .2s;
 
   &.visible {
+    flex-shrink: 0;
     max-height: 22px;
     margin-top: .5rem;
 
