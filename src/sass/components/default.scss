@@ -1,0 +1,40 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #15161b;
+  font-family: Nunito, system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+  font-size: 16px;
+  color: $text-color;
+  margin: 0;
+  height: 100%;
+  line-height: normal;
+}
+
+::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #232830;
+  width: 4px;
+}
+
+::selection {
+  background-color: $color-primary;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+}
+
+::-moz-selection {
+  background-color: $color-primary;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+}

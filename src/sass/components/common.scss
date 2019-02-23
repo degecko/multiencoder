@@ -1,0 +1,41 @@
+@for $i from 0 through 4 {
+  .p-#{$i} {
+    padding: #{$i*.5}rem;
+  }
+
+  .m-#{$i} {
+    margin: #{$i*.5}rem;
+  }
+
+  .mt-#{$i} {
+    margin-top: #{$i*.5}rem;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: #{$i*.5}rem;
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-block {
+  display: block;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
+.color-normal {
+  color: $text-color;
+}
+
+[v-cloak] {
+  display: none !important;
+}

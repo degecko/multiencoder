@@ -1,0 +1,9 @@
+$color-primary: var(--primaryColor);
+$text-color: #5f656e;
+
+@mixin tlrb($value) {
+  top: $value;
+  left: $value;
+  right: $value;
+  bottom: $value;
+}

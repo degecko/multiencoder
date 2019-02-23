@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <base href="/" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MultiEncoder.com</title>
+	<link rel="stylesheet" type="text/css" href="dist/app.css?id=118d41c4e18d206cc598">
+</head>
+<body>
+
+<div id="app" class="d-flex" :style="'--primaryColor:' + settings.color">
+	<div id="sidebar" class="p-4">
+		<a id="branding" class="d-block" @click="settings.showColorPicker =! settings.showColorPicker">
+			<span>MultiEncoder</span>
+			<span class="overlay">
+				<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+					 viewBox="0 0 512 512" v-html="settingsIcon"></svg>
+			</span>
+		</a>
+
+		<div class="color-picker d-flex jc-space-between" :class="{ visible: settings.showColorPicker }">
+			<div class="color" v-for="color in settings.colors" :style="{ borderColor: color, backgroundColor: color }"
+				 :class="{ picked: settings.color === color }" @click="pickColor(color)"></div>
+		</div>
+
+		<p class="m-0 mt-2 site-description">
+			Easy to use text encoding tool
+		</p>
+		<p class="m-0 mt-1 site-instructions">
+			Toggle the ciphers you're interested in &amp; paste your string in the corresponding cipher input
+		</p>
+
+		<section :class="{ visible: sections.ciphers.visible }" v-cloak>
+			<h4 @click="sections.ciphers.visible =! sections.ciphers.visible">
+				<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" class=""></path></svg>
+				<span>Ciphers ({{ enabledCiphersCount }}/{{ ciphers.length }})</span>
+			</h4>
+
+			<div class="ciphers">
+				<div v-for="cipher in ciphers" class="cipher d-flex ai-center jc-space-between"
+					 :class="{ enabled: cipher.enabled }">
+					<div class="label" v-text="cipher.title"></div>
+					<label class="checkbox">
+						<input type="checkbox" v-model="cipher.enabled">
+					</label>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+			Developed &amp; Maintained by <a href="http://degecko.com" target="_blank">Gecko</a>
+		</footer>
+	</div>
+
+	<div id="content" class="fields d-flex">
+		<div class="field" :class="{ focus: focused === 'plain' }">
+			<div class="label">
+				<label for="f-1">Plain Text</label>
+			</div>
+			<textarea id="f-1" class="p-2" v-model="plain" ref="plain"
+					  @focus="handleFocus('plain', $event)" @blur="focused = null"></textarea>
+		</div>
+
+		<div class="field" v-for="(cipher, i) in ciphers" v-if="cipher.enabled"
+			 :class="{ focus: focused === cipher.name }">
+			<div class="label">
+				<label :for="'f' + i">
+					<span v-text="cipher.title"></span>
+					<span class="color-normal" v-if="cipher.key">&mdash; Key:</span>
+				</label>
+				<template v-if="cipher.key">
+					<input :type="cipher.key.type || 'text'" v-model="cipher.key.value" @blur="focused = null"
+						   @input="decipher(cipher, null, cipher.name !== 'caesar')"
+						   @focus="handleFocus(cipher, $event)" />
+				</template>
+			</div>
+			<textarea :id="'f' + i" class="p-2" :value="cipher.content" @focus="handleFocus(cipher, $event)"
+					  @input="decipher(cipher, $event.target.value)" @blur="focused = null" spellcheck="false">
+			</textarea>
+		</div>
+
+		<div class="field hashers">
+			<div class="label">
+				<label>
+					<span>Hashes</span>
+					<span class="color-normal">&mdash; Key:</span>
+				</label>
+				<input type="text" v-model="hashKey" />
+			</div>
+			<div class="hashes">
+				<div class="hash" v-for="hash in hashes">
+					<div class="label" v-html="hash.title.replace(' ', '<small>') + '</small>'"></div>
+					<input type="text" :value="hash.value" onclick="this.select()" spellcheck="false" readonly>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.min.js"></script>
+<script src="dist/app.js?id=a77bf785855c8cc8ddf9"></script>
+
+</body>
+</html>

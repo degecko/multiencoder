@@ -1,0 +1,21 @@
+{
+  "name": "multiencoder",
+  "version": "2.0.0",
+  "scripts": {
+    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "author": "Cosmin Gheorghita",
+  "license": "MIT",
+  "devDependencies": {
+    "crypto-js": "^3.1.9-1",
+    "he": "^1.2.0",
+    "laravel-mix": "^4.0.14",
+    "lodash": "^4.17.11",
+    "resolve-url-loader": "2.3.1",
+    "sass": "^1.17.1",
+    "sass-loader": "7.*",
+    "vue-template-compiler": "^2.6.7"
+  }
+}
