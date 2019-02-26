@@ -38,3 +38,9 @@ a {
   color: $color-primary;
   text-decoration: none;
 }
+
+textarea {
+  &:focus::-webkit-scrollbar-thumb {
+    background-color: $color-primary;
+  }
+}
