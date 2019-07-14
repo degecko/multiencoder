@@ -13,6 +13,7 @@ new Vue({
         plain: '',
         hashKey: '',
         focused: null,
+        lightTheme: false,
         previouslyFocused: null,
         settings: {
             color: '#f1960c',
@@ -156,6 +157,8 @@ new Vue({
                     }
 
                     this.store(`cipher.${cipher.name}.enabled`, +enabled);
+
+                    this.mapValuesToLocationHash();
                 });
             });
         },
@@ -175,9 +178,27 @@ new Vue({
             });
         },
 
-        restorePlainFromLocationHash () {
+        restoreFromLocationHash () {
             if ((location.hash || '').length > 1) {
-                this.plain = decodeURIComponent(location.hash.substr(1));
+                let hash = decodeURIComponent(location.hash.substr(1)).split('|');
+                this.plain = hash[0];
+
+                if (hash.length > 1) {
+                    hash[1].split(',').map((part, i) => {
+                        if (! this.ciphers[i]) return;
+
+                        const char = part[0];
+                        let key = part.split(':');
+
+                        if (key.length > 1 && this.ciphers[i].key) {
+                            this.ciphers[i].key.value = key[1];
+                        }
+
+                        if (char === '1' || char === '0') {
+                            this.ciphers[i].enabled = char === '1';
+                        }
+                    });
+                }
             }
         },
 
@@ -204,19 +225,25 @@ new Vue({
                 this.previouslyFocused = cipher.name || cipher;
             }
         },
+
+        mapValuesToLocationHash () {
+            const hash = [this.plain.substr(0, 2e3), '|'];
+            
+            hash.push(this.ciphers.map(cipher => {
+                return +cipher.enabled + (cipher.key && cipher.key.value ? ':' + cipher.key.value : '');
+            }).join(','));
+            
+            location.hash = hash.join('');
+        },
     },
 
     watch: {
-        plain (string) {
+        plain (plain) {
             this.ciphers.filter(cipher => cipher.enabled).map(cipher => {
-                if (string) cipher.content = this.encode[cipher.name].bind(this)(cipher);
+                if (plain) cipher.content = this.encode[cipher.name].bind(this)(cipher);
             });
 
-            if ((string || '').length < 2e3) {
-                location.hash = encodeURIComponent(string);
-            } else {
-                location.hash = '';
-            }
+            this.mapValuesToLocationHash();
         },
 
         'sections.ciphers.visible' (visible) {
@@ -226,12 +253,20 @@ new Vue({
         'settings.color' (color) {
             this.store('color', color);
         },
+
+        lightTheme (state) {
+            document.documentElement.classList[state ? 'add' : 'remove']('light-theme');
+
+            this.store('lightTheme', +state);
+        },
     },
 
     created () {
         this.watchCipherToggles();
         this.restoreCiphersToggleStates();
-        this.restorePlainFromLocationHash();
+        this.restoreFromLocationHash();
+
+        this.lightTheme = +this.retrieve('lightTheme', false);
         this.settings.color = this.retrieve('color', this.settings.colors[2]);
         this.sections.ciphers.visible = +this.retrieve('ciphersVisible', true);
     },
